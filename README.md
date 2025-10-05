@@ -11,6 +11,11 @@ API de gerenciamento de tarefas internas (Tasks e Subtasks) com usuários vincul
 
 ## Como executar
 
+A API pode ser executada de duas formas:
+- **Modo local (sem Docker)** — ideal para desenvolvimento rápido.
+- **Modo containerizado (Docker Compose)** — ideal para ambiente isolado e reprodutível.
+
+
 ### Pré‑requisitos
 - **Java 21** e **Maven 3.9+**
 - **MongoDB** local ou via Docker
@@ -19,30 +24,30 @@ API de gerenciamento de tarefas internas (Tasks e Subtasks) com usuários vincul
 A aplicação lê a URI do Mongo pela variável:  
 `SPRING_DATA_MONGODB_URI` (default: `mongodb://localhost:27017/taskflow-api`).
 
-### 1) Rodando local (sem Docker)
-
+### 1) Rodando em modo local (sem Docker)
 ```bash
-# (opcional) exportar a URI do Mongo
-export SPRING_DATA_MONGODB_URI='mongodb://localhost:27017/taskflow-api'
-
-# compilar e rodar testes
 mvn clean test
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.docker.compose.enabled=false"
 
-# executar a API
-mvn spring-boot:run
 ```
 
-- URL base: `http://localhost:8080`
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html#/`
 
 ### 2) Rodando com Docker Compose
 
 ```bash
 # build e sobe app + mongodb
-docker compose up --build
+mvn clean package -DskipTests
+docker compose build --no-cache
+docker compose up -d
+
+# Undeploy:
+docker-compose down
+
 ```
 
-- App: `http://localhost:8080`
+- URL base: `http://localhost:8080`
+- Swagger UI: `http://localhost:8080/swagger-ui/index.html#/`
 - MongoDB: `localhost:27017` (db: `taskflow-api`)
 
 > O `docker-compose.yml` já injeta `SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/taskflow-api` para o container da API.

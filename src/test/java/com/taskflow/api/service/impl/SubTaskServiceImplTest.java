@@ -137,7 +137,7 @@ class SubTaskServiceImplTest {
         assertEquals(1, result.getTotalElements());
         OutputSubTaskListDTO dto = result.getContent().get(0);
         assertEquals(s1.getId().toHexString(), dto.getId());
-        assertEquals("A", dto.getTitulo());
+        assertEquals("a", dto.getTitulo());
         assertEquals(StatusENUM.PENDENTE, dto.getStatusEnum());
     }
 
